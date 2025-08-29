@@ -6,8 +6,8 @@ const SUFFIXES = ['ing', 'ed', 'ly', 'ship', 'tion'];
 const PREFIXES = ['Ba', 'Be', 'Bi', 'Bo', 'Bu'];
 
       function isValidWord(word, prefix) {
-        if (!word || word.length < 2) return false;
-        if (!word.startsWith(prefix)) return false;
+        if (!word || word.length < 4) return false; // no 3-letter words
+        if (!word.toLowerCase().startsWith(prefix.toLowerCase())) return false;
         let hasPattern = false;
         for (let i = 0; i < word.length - 1; i++) {
           if (!VOWELS.includes(word[i].toLowerCase()) && VOWELS.includes(word[i + 1].toLowerCase())) {
@@ -127,9 +127,8 @@ const PREFIXES = ['Ba', 'Be', 'Bi', 'Bo', 'Bu'];
     e.preventDefault();
     if (!isPlayerTurn) return;
     if (!isValidWord(input, PREFIXES[round % PREFIXES.length])) {
-      setMessage('Invalid word or wrong prefix!');
+      setMessage('Invalid word (min 4 letters, must match prefix, pattern or suffix).');
       setInput('');
-      setTimer(30);
       return;
     }
     setPlayerWords([...playerWords, input]);
@@ -138,10 +137,7 @@ const PREFIXES = ['Ba', 'Be', 'Bi', 'Bo', 'Bu'];
     setMessage(`Valid! +${score} points.`);
     setInput('');
     setIsPlayerTurn(false);
-    setTimer(30);
-    setTimeout(() => {
-      handleOpponentTurn();
-    }, 1000);
+  handleOpponentTurn();
   }
 
   function handleOpponentTurn() {
@@ -177,8 +173,9 @@ const PREFIXES = ['Ba', 'Be', 'Bi', 'Bo', 'Bu'];
       {/* Notch */}
   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-3 bg-gray-700 rounded-full"></div>
       <div className="flex justify-center mt-6 mb-2">
-        <div className="bg-gray-100 rounded-xl p-2">
-          <img src="/outworded_traced.svg" alt="OutWorded Logo" className="h-20 w-auto" />
+        <div className="bg-white rounded-xl px-4 py-3 flex flex-col items-center">
+          <img src="/outworded_traced.svg" alt="OutWorded Logo" className="h-16 w-auto" />
+          <span className="mt-2 text-2xl font-bold text-gray-900 tracking-wide">OutWorded</span>
         </div>
       </div>
       {!
